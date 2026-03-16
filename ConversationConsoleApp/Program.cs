@@ -6,33 +6,61 @@ namespace ConversationConsoleApp
     {
         static void Main(string[] args)
         {
-            ConversationTree conversataion = new ConversationTree();
+            ConversationTree conversation = new ConversationTree();
 
-            conversataion.root = new ConversationNode("What is your Name",
+            conversation.root = new ConversationNode("What is your Name",
                                     new List<string>()
                                                 {"None of your Business",
                                                     "My Name is Bill",
                                                     "I've lost my memory"});
 
             //ConversationNode phrase = conversataion.Find(conversataion.root, "None of your Business");
-            conversataion.InsertAfter("None of your Business", "How rude");
+            conversation.InsertAfter("None of your Business", "How rude");
 
-            Console.WriteLine("{0}", conversataion.root.phrase);
-            int i = 1;
-            foreach (ConversationNode answer in conversataion.root.children)
+            ConversationNode current = conversation.root;
+            // Assume the computer starts the coversation
+            Console.WriteLine("Computer says ------> {0}", current.phrase);
+            // Possible User Responses
+            while (current.children.Count() > 0)
             {
-                Console.WriteLine("Your Choices {0} {1}", i++, answer.phrase);
-                if(answer.children.Count() > 0)
+                Console.WriteLine("Answers:");
+                int i = 0;
+                foreach (ConversationNode answer in current.children)
                 {
-                    int j = 1;
-                    foreach (ConversationNode response in answer.children)
-                    {
-                        Console.WriteLine("Responses {0} {1}", j++, response.phrase);
-                    }
+                    Console.WriteLine("{0} {1}", i++, answer.phrase);
                 }
+
+                Console.WriteLine("Select an answer");
+                string? input = Console.ReadLine();
+                int selection = Convert.ToInt32(input);
+                Console.WriteLine("You said {0}", current.children[selection].phrase);
+                // Computer responds to the answer
+                current = conversation.computerSays(current.children[selection]);
+                // if we are done with the conversation, end it
+                if (current == null)
+                {
+                    Console.WriteLine("Conversation Ended");
+                    break;
+                }
+                else Console.WriteLine("Computer says {0}", current.phrase);
+
             }
-            ConversationNode n = conversataion.HoldConversation(conversataion.root);
-            Console.WriteLine("Computer says {0}", n.phrase);
+            //int i = 1;
+
+            //foreach (ConversationNode answer in current.children)
+            //{
+            //    if (answer.children.Count() > 0)
+            //    {
+            //        int j = 1;
+            //        foreach (ConversationNode response in answer.children)
+            //        {
+            //            Console.WriteLine("Responses {0} {1}", j++, response.phrase);
+            //        }
+            //    }
+            //}
+            //ConversationNode n = conversation.HoldConversation(conversation.root);
+            
+            //Console.WriteLine("Computer says {0}", n.phrase);
 
             Console.ReadKey();
         }

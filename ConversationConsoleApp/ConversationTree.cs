@@ -39,6 +39,13 @@ namespace DSATrees
             return null;
         }
 
+        public ConversationNode computerSays(ConversationNode current)
+        {
+            if (current.children.Count() > 0)
+                // int.Parse(Console.ReadLine())
+                return current.children[new Random().Next(current.children.Count())];
+            return null;
+        }
         public ConversationNode HoldConversation(ConversationNode current)
         {
             if (current != null)

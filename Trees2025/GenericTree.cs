@@ -18,24 +18,20 @@ namespace DSATrees
             
         }
 
-public bool simplex_dfs(TNode<T> node, TNode<T> Goal, List<TNode<T>> visited, List<TNode<T>> solution )
+public bool dfs(TNode<T> node, TNode<T> Goal, List<TNode<T>> visited, List<TNode<T>> solution )
 {
             visited.Add(node);
             if (Goal.CompareTo(node) == 0)
                 return true;
             else if (node.children.Count > 0)
-            {
                 foreach (var child in node.children)
-                {
-                    solution.Add(child);
-                    if (simplex_dfs(child, Goal,visited, solution))
+                    if (dfs(child, Goal, visited, solution))
+                    {
+                        solution.Add(child);
                         return true;
-                    else
-                         solution.Remove(child);
-                }
-            }
+                    }
             return false;
-}
+        }
 
         /* Current is the current node we are visiting
          *  Path is the current Path to that node
